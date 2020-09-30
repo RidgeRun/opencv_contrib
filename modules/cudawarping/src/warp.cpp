@@ -382,6 +382,7 @@ void cv::cuda::warpPerspective(InputArray _src, OutputArray _dst, InputArray _M,
     bool useNpp = borderMode == BORDER_CONSTANT && ofs.x == 0 && ofs.y == 0 && useNppTab[src.depth()][src.channels() - 1][interpolation];
     // NPP bug on float data
     useNpp = useNpp && src.depth() != CV_32F;
+    useNpp = false;
 
     if (useNpp)
     {

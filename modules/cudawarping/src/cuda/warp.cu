@@ -134,7 +134,12 @@ namespace cv { namespace cuda { namespace device
             {
                 const float2 coord = Transform::calcCoord(x, y);
 
-                dst.ptr(y)[x] = saturate_cast<T>(src(coord.y, coord.x));
+                T src_pix = saturate_cast<T>(src(coord.y, coord.x));
+                T zeros = VecTraits<T>::all(0);
+
+                if (!VecTraits<T>::compare(src_pix, zeros)) {
+                    dst.ptr(y)[x] = saturate_cast<T>(src(coord.y, coord.x));
+                }
             }
         }
 
@@ -236,6 +241,7 @@ namespace cv { namespace cuda { namespace device
             };
 
         OPENCV_CUDA_IMPLEMENT_WARP_TEX(uchar)
+
         //OPENCV_CUDA_IMPLEMENT_WARP_TEX(uchar2)
         OPENCV_CUDA_IMPLEMENT_WARP_TEX(uchar4)
 
